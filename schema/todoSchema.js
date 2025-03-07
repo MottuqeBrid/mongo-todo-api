@@ -34,7 +34,7 @@ todoSchema.statics = {
 };
 // query helpers
 todoSchema.query = {
-  findByJs: function (language) {
+  byLanguage: function (language) {
     return this.find({ title: new RegExp(language, "i") });
   },
 };

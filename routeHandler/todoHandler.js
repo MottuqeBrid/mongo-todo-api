@@ -42,7 +42,6 @@ router.get("/language", async (req, res) => {
       _id: 0,
       __v: 0,
     });
-    console.log(data);
     res.status(200).json(data);
   } catch (e) {
     res.status(404).json({
