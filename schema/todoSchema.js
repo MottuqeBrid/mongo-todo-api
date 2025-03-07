@@ -17,4 +17,26 @@ const todoSchema = mongoose.Schema({
     default: Date.now,
   },
 });
+
+// instance methods
+todoSchema.methods = {
+  findActive: function () {
+    return mongoose.model("Todo").find({ status: "active" });
+  },
+};
+
+// static methods
+todoSchema.statics = {
+  findByJs: function () {
+    // return this.find({ title: new RegExp("js", "i") });
+    return this.find({ title: /js/i });
+  },
+};
+// query helpers
+todoSchema.query = {
+  findByJs: function (language) {
+    return this.find({ title: new RegExp(language, "i") });
+  },
+};
+
 module.exports = todoSchema;

@@ -4,18 +4,64 @@ const router = express.Router();
 const todoSchema = require("../schema/todoSchema");
 const Todo = new mongoose.model("Todo", todoSchema);
 
+// GET active todos
+router.get("/active", async (req, res) => {
+  try {
+    const todo = new Todo();
+    const data = await todo.findActive().select({
+      _id: 0,
+      __v: 0,
+    });
+    res.status(200).json(data);
+  } catch (e) {
+    res.status(404).json({
+      message: "There was an server side error",
+    });
+  }
+});
+// js static
+router.get("/js", async (req, res) => {
+  try {
+    const data = await Todo.findByJs().select({
+      _id: 0,
+      __v: 0,
+    });
+    console.log(data);
+    res.status(200).json(data);
+  } catch (e) {
+    res.status(404).json({
+      message: "There was an server side error",
+      error: e,
+    });
+  }
+});
+// GET todo by language
+router.get("/language", async (req, res) => {
+  try {
+    const data = await Todo.find().byLanguage("js").select({
+      _id: 0,
+      __v: 0,
+    });
+    console.log(data);
+    res.status(200).json(data);
+  } catch (e) {
+    res.status(404).json({
+      message: "There was an server side error",
+      error: e,
+    });
+  }
+});
 // Get all the todos
 router.get("/", async (req, res) => {
   try {
-    const todos = await Todo.find({ status: "active" })
-      .select({
-        _id: 0,
-        __v: 0,
-      })
-      .limit(2);
+    const todos = await Todo.find({ status: "active" }).select({
+      _id: 0,
+      __v: 0,
+    });
+    // .limit(2);
     res.status(200).json(todos);
   } catch (e) {
-    res.status(200).json({
+    res.status(404).json({
       message: "There was an error fetching todos",
     });
   }
